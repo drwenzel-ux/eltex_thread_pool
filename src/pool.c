@@ -1,6 +1,6 @@
 #include "pool.h"
 
-static struct task *task_create(void (*func)(int), int arg) {
+static struct task *task_create(void (*func)(void *), void *arg) {
   struct task *task;
 
   if (func == NULL)
@@ -136,7 +136,7 @@ void pool_destroy(struct pool *p) {
   mem_free(p);
 }
 
-int add_task(struct pool *p, void (*f)(int), int arg) {
+int add_task(struct pool *p, void (*f)(void *), void *arg) {
   struct task *task;
 
   if (p == NULL)

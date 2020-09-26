@@ -4,9 +4,14 @@
 #include "inet_socket.h"
 #include <pthread.h>
 
+struct connection {
+  int fd;
+  struct sockaddr_in sa;
+};
+
 struct task {
-  void (*func)(int);
-  int arg;
+  void (*func)(void *arg);
+  void *arg;
   struct task *next;
 };
 
@@ -23,7 +28,7 @@ struct pool {
 
 struct pool *pool_create(size_t num);
 void pool_destroy(struct pool *tp);
-int add_task(struct pool *tp, void (*f)(int), int arg);
+int add_task(struct pool *tp, void (*f)(void *), void *arg);
 void pool_wait(struct pool *tp);
 
 #endif
